@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "semi": "error",
+    "no-extra-semi": "error",
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ],
+    "no-console": "warn",
+    "max-len": [
+      "warn",
+      {
+        "code": 80,
+        "ignoreUrls": true
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "only-multiline"
+      }
+    ],
+    "import/no-anonymous-default-export": "off"
+  }
+}
