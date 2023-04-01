@@ -39,6 +39,13 @@ const todoSlice = createSlice({
           : todo
         );
     },
+    changeTodoTitle(
+      state,
+      action: PayloadAction<{ id: string; title: string;}>,
+    ) {
+      const todo = state.todoList.find(({ id }) => id === action.payload.id);
+      if (todo) todo.title = action.payload.title;
+    },
     setTitle(state, action: PayloadAction<string>) {
       state.title = action.payload;
     },
@@ -50,6 +57,7 @@ export const {
   addChildTodo,
   removeTodo,
   toggleTodo,
+  changeTodoTitle,
   setTitle,
 } = todoSlice.actions;
 export default todoSlice.reducer;

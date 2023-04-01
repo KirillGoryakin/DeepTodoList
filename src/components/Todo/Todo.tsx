@@ -1,6 +1,11 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { EditableText } from 'components/EditableText';
 import { useAppDispatch } from 'hooks/reduxHooks';
-import { removeTodo, toggleTodo } from 'store/slices/todoSlice';
+import {
+  changeTodoTitle,
+  removeTodo,
+  toggleTodo,
+} from 'store/slices/todoSlice';
 import { Todo as TodoType } from 'types';
 
 type Props = {
@@ -10,6 +15,11 @@ type Props = {
 const Todo: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
   
+  const handleChange = (value: string) => {
+    if (value.trim().length > 0)
+      dispatch(changeTodoTitle({ id: todo.id, title: value }));
+  };
+  
   return (
     <Paper elevation={3}>
       <Box
@@ -17,12 +27,19 @@ const Todo: React.FC<Props> = ({ todo }) => {
         flexDirection='column'
         gap={2} p={2}
       >
-        <Typography
-          fontSize={20}
-          style={{ textDecoration: todo.done ? 'line-through' : 'auto' }}
+        <EditableText
+          value={todo.title}
+          onChange={handleChange}
         >
-          {todo.title}
-        </Typography>
+          {value => (
+            <Typography
+              fontSize={20}
+              style={{ textDecoration: todo.done ? 'line-through' : 'auto' }}
+            >
+              {value}
+            </Typography>
+          )}
+        </EditableText>
 
         <Box display='flex' gap={2}>
           <Button
