@@ -9,7 +9,11 @@ export type TodoState = {
 
 const initialState: TodoState = {
   title: 'New project',
-  todoList: [],
+  todoList: [
+    { id: '1', title: 'Eat', done: false, order: 1 },
+    { id: '2', title: 'Other', done: false, order: 2 },
+    { id: '3', title: 'Sleep', done: false, order: 3 },
+  ],
 };
 
 const todoSlice = createSlice({
@@ -35,6 +39,9 @@ const todoSlice = createSlice({
           : todo
         );
     },
+    setTitle(state, action: PayloadAction<string>) {
+      state.title = action.payload;
+    },
   },
 });
 
@@ -43,5 +50,6 @@ export const {
   addChildTodo,
   removeTodo,
   toggleTodo,
+  setTitle,
 } = todoSlice.actions;
 export default todoSlice.reducer;
