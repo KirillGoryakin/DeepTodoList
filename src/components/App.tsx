@@ -14,7 +14,8 @@ const App = () => {
         <ProjectTitle />
 
         <Box
-          display={}
+          display='flex'
+          justifyContent='space-around'
         >
           <AddTodo />
         </Box>
