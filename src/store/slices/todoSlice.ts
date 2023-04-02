@@ -10,17 +10,17 @@ export type TodoState = {
 
 const initialState: TodoState = {
   title: 'New project',
-  todoList: [
-    { id: '1', title: 'Eat', done: false, order: 1 },
-    { id: '2', title: 'Other', done: false, order: 2 },
-    { id: '3', title: 'Sleep', done: false, order: 3 },
-  ],
+  todoList: [],
 };
 
 const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    importProject(state, action: PayloadAction<TodoState>) {
+      state.title = action.payload.title;
+      state.todoList = action.payload.todoList;
+    },
     addTodo(state, action: PayloadAction<Todo>) {
       state.todoList.push(action.payload);
     },
@@ -51,6 +51,7 @@ const todoSlice = createSlice({
 });
 
 export const {
+  importProject,
   addTodo,
   addChildTodo,
   removeTodo,

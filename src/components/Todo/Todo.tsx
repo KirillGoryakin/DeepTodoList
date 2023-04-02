@@ -17,11 +17,6 @@ type Props = {
 const Todo: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
   
-  const handleChange = (value: string) => {
-    if (value.trim().length > 0)
-      dispatch(changeTodoTitle({ id: todo.id, title: value }));
-  };
-  
   return (
     <Paper elevation={3}>
       <Box
@@ -31,7 +26,9 @@ const Todo: React.FC<Props> = ({ todo }) => {
       >
         <EditableText
           value={todo.title}
-          onChange={handleChange}
+          onChange={
+            v => dispatch(changeTodoTitle({ id: todo.id, title: v.trim() }))
+          }
         >
           {value => (
             <Typography
