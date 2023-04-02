@@ -18,8 +18,9 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     importProject(state, action: PayloadAction<TodoState>) {
-      state.title = action.payload.title;
-      state.todoList = action.payload.todoList;
+      const { title, todoList } = action.payload;
+      if (title) state.title = title;
+      if (todoList) state.todoList = todoList;
     },
     addTodo(state, action: PayloadAction<Todo>) {
       state.todoList.push(action.payload);
