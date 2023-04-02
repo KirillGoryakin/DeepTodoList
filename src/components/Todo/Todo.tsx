@@ -1,5 +1,7 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { AddTodo } from 'components/AddTodo';
 import { EditableText } from 'components/EditableText';
+import { TodoList } from 'components/TodoList';
 import { useAppDispatch } from 'hooks/reduxHooks';
 import {
   changeTodoTitle,
@@ -41,7 +43,7 @@ const Todo: React.FC<Props> = ({ todo }) => {
           )}
         </EditableText>
 
-        <Box display='flex' gap={2}>
+        <Box display='flex' flexWrap='wrap' gap={2}>
           <Button
             onClick={() => dispatch(toggleTodo(todo.id))}
             color='primary'
@@ -57,7 +59,11 @@ const Todo: React.FC<Props> = ({ todo }) => {
           >
             Delete
           </Button>
+          
+          <AddTodo parentId={todo.id} />
         </Box>
+
+        <TodoList parentId={todo.id} />
       </Box>
     </Paper>
   );

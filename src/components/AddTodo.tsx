@@ -10,25 +10,40 @@ import {
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useAppDispatch, useAppSelector } from 'hooks/reduxHooks';
-import { addTodo } from 'store/slices/todoSlice';
+import { addChildTodo, addTodo } from 'store/slices/todoSlice';
+import { deepFindInList } from 'utils/deepFindInList';
+import { Todo } from 'types';
 
-const AddTodo = () => {
+type Props = {
+  parentId?: string;
+};
+
+const AddTodo: React.FC<Props> = ({ parentId }) => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todo.todoList);
+  const todoList = useAppSelector(state => state.todo.todoList);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const lastOrder = todos.reduce(
-    (acc, v) => v.order > acc ? v.order : acc, 0);
+  const todos = parentId
+    ? deepFindInList(todoList, parentId)?.children ?? todoList
+    : todoList;
+
+  const lastOrder = todos.reduce((a, v) => v.order > a ? v.order : a, 0);
 
   const handleSubmit = () => {
     if (value.trim().length > 0) {
-      dispatch(addTodo({
+      const todo: Todo = {
         id: new Date().getTime() + '',
         title: value.trim(),
         done: false,
         order: lastOrder + 1,
-      }));
+      };
+
+      if (parentId)
+        dispatch(addChildTodo({ id: parentId, todo }));
+      else
+        dispatch(addTodo(todo));
+
       setOpen(false);
       setValue('');
     }

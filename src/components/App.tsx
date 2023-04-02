@@ -7,7 +7,7 @@ const App = () => {
   return (
     <Container maxWidth='md'>
       <Box
-        my={4} p={4}
+        my={4} p={2}
         boxShadow={4}
         borderRadius={4}
       >

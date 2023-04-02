@@ -1,5 +1,5 @@
 import { Todo } from 'types';
-import { deepFindInList as _ } from 'utils/deepFindInList';
+import { deepRemoveFromList as _ } from 'utils/deepRemoveFromList';
 
 const createTodo = (
   id: string = new Date().getTime()+'',
@@ -9,8 +9,8 @@ const createTodo = (
   children?: Todo[],
 ): Todo => ({ id, title, done, order, children });
 
-describe('deepFindInList', () => {
-  it('should find Todo on the first level', () => {
+describe('deepRemoveFromList', () => {
+  it('should remove one Todo on the first level', () => {
     const expected = createTodo('2', 'This one');
     const list = [
       createTodo('1'),
@@ -18,13 +18,13 @@ describe('deepFindInList', () => {
       createTodo('3'),
     ];
 
-    const res = _(list, '2')!;
-    expect(res).toBe(expected);
-    res.order = 555;
-    expect(list[1].order).toEqual(555);
+    const res = _(list, '2');
+    expect(res).toHaveLength(2);
+    expect(res).not.toContain(expected);
+    expect(res[1].id).toEqual('3');
   });
 
-  it('should find Todo on the second level', () => {
+  it('should remove Todo on the second level', () => {
     const expected = createTodo('555', 'I am deep');
     const list = [
       createTodo(),
@@ -42,14 +42,14 @@ describe('deepFindInList', () => {
       ]),
     ];
 
-    const res = _(list, '555')!;
-    expect(res).toBe(expected);
-    res.order = 555;
-    // @ts-ignore
-    expect(list[1].children[3].order).toEqual(555);
+    const res = _(list, '555');
+    expect(res).toHaveLength(3);
+    expect(res[1].children).toHaveLength(4);
+    expect(res[2].children).toHaveLength(3);
+    expect(res[1].children).not.toContain(expected);
   });
 
-  it('should find Todo in a deeply nested list', () => {
+  it('should remove Todo in a deeply nested list', () => {
     const expected = createTodo('555666', 'Find me! I dare you!');
     const list = [
       createTodo('1', '', false, 0, [
@@ -109,12 +109,25 @@ describe('deepFindInList', () => {
       createTodo(),
     ];
 
-    const res = _(list, '555666')!;
-    expect(res).toBe(expected);
-    res.order = 555;
+    const res = _(list, '555666');
+    expect(res).toHaveLength(5);
+    expect(res[0].children).toHaveLength(4);
     // @ts-ignore
-    expect(list[3].children[0].children[1].children[2].children[2].order)
-      .toEqual(555);
+    expect(res[0].children[2].children).toHaveLength(4);
+    // @ts-ignore
+    expect(res[0].children[2].children[0].children[2].children).toHaveLength(4);
+    expect(res[2].children).toHaveLength(4);
+    expect(res[3].children).toHaveLength(4);
+    // @ts-ignore
+    expect(res[3].children[0].children).toHaveLength(4);
+    // @ts-ignore
+    expect(res[3].children[0].children[1].children).toHaveLength(4);
+    // @ts-ignore
+    expect(res[3].children[0].children[1].children[2].children)
+      .toHaveLength(3);
+    // @ts-ignore
+    expect(res[3].children[0].children[1].children[2].children)
+      .not.toContain(expected);
   });
 });
 

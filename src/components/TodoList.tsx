@@ -1,9 +1,17 @@
 import { Box } from '@mui/material';
 import { useAppSelector } from 'hooks/reduxHooks';
 import { Todo } from './Todo';
+import { deepFindInList } from 'utils/deepFindInList';
 
-const TodoList = () => {
-  const todos = useAppSelector(state => state.todo.todoList);
+type Props = {
+  parentId?: string;
+};
+
+const TodoList: React.FC<Props> = ({ parentId }) => {
+  const todoList = useAppSelector(state => state.todo.todoList);
+  const todos = parentId
+    ? deepFindInList(todoList, parentId)?.children ?? []
+    : todoList;
   const sorted = [...todos].sort((a, b) => a.order - b.order);
   
   return (

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from 'types';
 import { deepFindInList } from 'utils/deepFindInList';
+import { deepRemoveFromList } from 'utils/deepRemoveFromList';
 
 export type TodoState = {
   title: string;
@@ -30,20 +31,17 @@ const todoSlice = createSlice({
       else todo.children = [action.payload.todo];
     },
     removeTodo(state, action: PayloadAction<string>) {
-      state.todoList = state.todoList.filter(({ id }) => id !== action.payload);
+      state.todoList = deepRemoveFromList(state.todoList, action.payload);
     },
     toggleTodo(state, action: PayloadAction<string>) {
-      state.todoList = state.todoList
-        .map(todo => todo.id === action.payload
-          ? { ...todo, done: !todo.done}
-          : todo
-        );
+      const todo = deepFindInList(state.todoList, action.payload);
+      if (todo) todo.done = !todo.done;
     },
     changeTodoTitle(
       state,
       action: PayloadAction<{ id: string; title: string;}>,
     ) {
-      const todo = state.todoList.find(({ id }) => id === action.payload.id);
+      const todo = deepFindInList(state.todoList, action.payload.id);
       if (todo) todo.title = action.payload.title;
     },
     setTitle(state, action: PayloadAction<string>) {
