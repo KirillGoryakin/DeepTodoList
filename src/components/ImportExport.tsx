@@ -3,7 +3,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'hooks/reduxHooks';
 import { useRef } from 'react';
-import { TodoState, importProject } from 'store/slices/todoSlice';
+import { importProject } from 'store/slices/todoSlice';
 
 const ImportExport = () => {
   const dispatch = useAppDispatch();

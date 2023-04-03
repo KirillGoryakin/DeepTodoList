@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from 'types';
 import { deepFindInList } from 'utils/deepFindInList';
-import { deepRemoveFromList } from 'utils/deepRemoveFromList';
+import { deepFilterList } from 'utils/deepFilterList';
 
 export type TodoState = {
   title: string;
@@ -26,23 +26,35 @@ const todoSlice = createSlice({
       state.todoList.push(action.payload);
     },
     addChildTodo(state, action: PayloadAction<{ id: string; todo: Todo; }>) {
-      const todo = deepFindInList(state.todoList, action.payload.id);
+      const todo = deepFindInList(
+        state.todoList,
+        todo => todo.id === action.payload.id
+      )[0];
       if (!todo) return;
       if (todo.children) todo.children.push(action.payload.todo);
       else todo.children = [action.payload.todo];
     },
     removeTodo(state, action: PayloadAction<string>) {
-      state.todoList = deepRemoveFromList(state.todoList, action.payload);
+      state.todoList = deepFilterList(
+        state.todoList,
+        todo => todo.id !== action.payload,
+      );
     },
     toggleTodo(state, action: PayloadAction<string>) {
-      const todo = deepFindInList(state.todoList, action.payload);
+      const todo = deepFindInList(
+        state.todoList,
+        todo => todo.id === action.payload,
+      )[0];
       if (todo) todo.done = !todo.done;
     },
     changeTodoTitle(
       state,
       action: PayloadAction<{ id: string; title: string;}>,
     ) {
-      const todo = deepFindInList(state.todoList, action.payload.id);
+      const todo = deepFindInList(
+        state.todoList,
+        todo => todo.id === action.payload.id,
+      )[0];
       if (todo) todo.title = action.payload.title;
     },
     setTitle(state, action: PayloadAction<string>) {

@@ -1,35 +1,16 @@
-import { Box, Container } from '@mui/material';
-import { ProjectTitle } from './ProjectTitle';
-import { TodoList } from './TodoList';
-import { AddTodo } from './AddTodo';
-import { ImportExport } from './ImportExport';
+import {
+  createRoutesFromElements,
+  createBrowserRouter,
+  Route,
+  RouterProvider
+} from 'react-router-dom';
+import { Layout } from './Layout';
 
-const App = () => {
-  return (
-    <Container maxWidth='md'>
-      <Box
-        position='relative'
-        my={4} p={2}
-        boxShadow={4}
-        borderRadius={4}
-      >
-        <ProjectTitle />
+const router = createBrowserRouter(createRoutesFromElements(
+  <Route path='/' element={<Layout />}>
+  </Route>
+));
 
-        <Box position='absolute' top={16} right={16}>
-          <ImportExport />
-        </Box>
-
-        <Box
-          display='flex'
-          justifyContent='space-around'
-        >
-          <AddTodo />
-        </Box>
-      </Box>
-
-      <TodoList />
-    </Container>
-  );
-};
+const App = () => <RouterProvider router={router} />;
 
 export { App };

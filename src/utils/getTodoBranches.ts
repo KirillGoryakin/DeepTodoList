@@ -1,6 +1,7 @@
 import { Todo } from 'types';
+import { deepFindInList } from './deepFindInList';
 
-export const deepFindInList = (
+export const getTodoBranches = (
   list: Todo[],
   fn: (todo: Todo) => boolean,
 ): Todo[] => {
@@ -11,10 +12,9 @@ export const deepFindInList = (
       res.push(curr);
       continue;
     }
-    if (curr.children?.length) {
-      const foundChildren = deepFindInList(curr.children, fn);
-      res.push(...foundChildren);
-    }
+    if (!curr.children?.length) continue;
+    const todos = deepFindInList(curr.children, fn);
+    if (todos.length) res.push(curr);
   }
   return res;
 };

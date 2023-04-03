@@ -25,7 +25,10 @@ const AddTodo: React.FC<Props> = ({ parentId }) => {
   const [value, setValue] = useState('');
 
   const todos = parentId
-    ? deepFindInList(todoList, parentId)?.children ?? todoList
+    ? deepFindInList(
+        todoList,
+        todo => todo.id === parentId,
+      )[0].children ?? todoList
     : todoList;
 
   const lastOrder = todos.reduce((a, v) => v.order > a ? v.order : a, 0);
