@@ -47,7 +47,7 @@ const todoSlice = createSlice({
       )[0];
       if (todo) todo.done = !todo.done;
     },
-    changeTodoTitle(
+    setTodoTitle(
       state,
       action: PayloadAction<{ id: string; title: string;}>,
     ) {
@@ -56,6 +56,30 @@ const todoSlice = createSlice({
         todo => todo.id === action.payload.id,
       )[0];
       if (todo) todo.title = action.payload.title;
+    },
+    setTodoOrder(
+      state,
+      action: PayloadAction<{ id: string; order: number; }>,
+    ) {
+      const todo = deepFindInList(
+        state.todoList,
+        todo => todo.id === action.payload.id,
+      )[0];
+      if (todo) todo.order = action.payload.order;
+    },
+    swapTodoOrders(
+      state,
+      action: PayloadAction<[string, string]>,
+    ) {
+      const todos = deepFindInList(
+        state.todoList,
+        todo => action.payload.includes(todo.id),
+      );
+      if (todos.length === 2) {
+        const temp = todos[0].order;
+        todos[0].order = todos[1].order;
+        todos[1].order = temp;
+      }
     },
     setTitle(state, action: PayloadAction<string>) {
       state.title = action.payload;
@@ -69,7 +93,9 @@ export const {
   addChildTodo,
   removeTodo,
   toggleTodo,
-  changeTodoTitle,
+  setTodoTitle,
+  setTodoOrder,
+  swapTodoOrders,
   setTitle,
 } = todoSlice.actions;
 export default todoSlice.reducer;

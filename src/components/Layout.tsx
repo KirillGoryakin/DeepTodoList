@@ -1,9 +1,9 @@
 import { Box, Container } from '@mui/material';
 import { ProjectTitle } from './ProjectTitle';
-import { TodoList } from './TodoList';
 import { AddTodo } from './AddTodo';
 import { ImportExport } from './ImportExport';
 import { Search } from './Search';
+import { MainList } from './MainList';
 
 const Layout = () => {
   return (
@@ -30,7 +30,7 @@ const Layout = () => {
         </Box>
       </Box>
 
-      <TodoList />
+      <MainList />
     </Container>
   );
 };

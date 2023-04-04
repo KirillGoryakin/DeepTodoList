@@ -7,10 +7,12 @@ import { getTodoBranches } from 'utils/getTodoBranches';
 import { Todo as TodoType } from 'types';
 
 type Props = {
+  onDrop: (e: React.DragEvent<HTMLDivElement>, target: TodoType) => void;
+  setHolding: (todo: TodoType | null) => void;
   parentId?: string;
 };
 
-const TodoList: React.FC<Props> = ({ parentId }) => {
+const TodoList: React.FC<Props> = ({ onDrop, setHolding, parentId }) => {
   const [searchParams] = useSearchParams();
   const filter = searchParams.get('filter');
   const s = searchParams.get('s');
@@ -39,13 +41,6 @@ const TodoList: React.FC<Props> = ({ parentId }) => {
     }
   );
 
-  // if (s) {
-  //   todos = getTodoBranches(
-  //     todos,
-  //     todo => todo.title.toLowerCase().includes(s.toLowerCase())
-  //   );
-  // }
-
   todos = [...todos].sort((a, b) => a.order - b.order);
   
   return (
@@ -55,7 +50,12 @@ const TodoList: React.FC<Props> = ({ parentId }) => {
       gap={4}
     >
       {todos.map(todo => (
-        <Todo key={todo.id} todo={todo} />
+        <Todo
+          key={todo.id}
+          todo={todo}
+          onDrop={onDrop}
+          setHolding={setHolding}
+        />
       ))}
     </Box>
   );
