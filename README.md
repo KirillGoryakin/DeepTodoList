@@ -12,7 +12,9 @@
 - React JS
 - Typescript
 - Sass / Scss
-- Redux
+- Redux Toolkit
+- Redux Persist
+- Material UI
 - Jest
 # 👓 Live Demo
 https://todolist-tt-kirillgoryakin.vercel.app/
